@@ -6,18 +6,22 @@ public class Piece : MonoBehaviour
 {
     public Start start;
     public int id;
+    public Thread thread;
 
     bool selected = false;
 
     public void OnClick()
     {
-        if (selected)
+        if (start.clickable)
         {
-            Deselect();
-        }
-        else
-        {
-            Select();
+            if (selected)
+            {
+                Deselect();
+            }
+            else
+            {
+                Select();
+            }
         }
     }
 
@@ -25,6 +29,10 @@ public class Piece : MonoBehaviour
     {
         gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1);
         selected = true;
+        if(start.selectedPiece != null)
+        {
+            start.selectedPiece.Deselect();
+        }
         start.selectedPiece = this;
     }
 
