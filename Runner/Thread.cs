@@ -9,7 +9,7 @@ public class Thread : MonoBehaviour
     public End end;
     public Blok blok;
     float activeTime;
-    public int piece;
+    public Piece piece;
     public Start start;
 
     void Update()
@@ -29,7 +29,7 @@ public class Thread : MonoBehaviour
         isActive = true;
         gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1);
         blok = _blok;
-        blok.SetMethod(piece);
+            blok.SetMethod(piece == null ? 0 : piece.id);
     }
 
     public void Deactivate()
@@ -50,12 +50,17 @@ public class Thread : MonoBehaviour
 
     public void OnClick()
     {
-        if(start.selectedPiece != null)
+        if(start.selectedPiece != null && start.clickable)
         {
-            start.selectedPiece.gameObject.transform.SetParent(gameObject.transform);
-            start.selectedPiece.gameObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            piece = start.selectedPiece.id;
-            start.selectedPiece.Deselect();
+            piece = start.selectedPiece;
+            piece.Deselect();
+            piece.gameObject.transform.SetParent(gameObject.transform);
+            piece.gameObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            if( piece.thread)
+            {
+                piece.thread.piece = null;
+            }
+            piece.thread = this;
         }
     }
 }

@@ -8,6 +8,7 @@ public class Blok : MonoBehaviour
 {
     public Sprite[] sprite;
     public Action action = () => {};
+    public GameObject target;
     public void SetMethod(int _)
     {
         gameObject.GetComponent<Image>().sprite = sprite[_];
@@ -30,5 +31,10 @@ public class Blok : MonoBehaviour
     void Update()
     {
         action();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
     }
 }
